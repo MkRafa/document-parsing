@@ -1,0 +1,87 @@
+{
+  "extraction_schema": {
+    "personal_info": {
+      "first_name": "string",
+      "last_name": "string",
+      "date_of_birth": "string (YYYY-MM-DD)",
+      "gender": "string (Male/Female/Other)",
+      "email": "string",
+      "phone": "string",
+      "address": "string",
+      "city": "string",
+      "state": "string",
+      "zip_code": "string"
+    },
+    "insurance_details": {
+      "member_id": "string (required)",
+      "policy_number": "string",
+      "group_number": "string",
+      "plan_type": "string (HMO/PPO/EPO/HDHP/POS)",
+      "plan_name": "string",
+      "effective_date": "string (YYYY-MM-DD)",
+      "termination_date": "string (YYYY-MM-DD)",
+      "carrier_name": "string"
+    },
+    "coverage_info": {
+      "deductible": "number",
+      "out_of_pocket_max": "number",
+      "copay_visit": "number",
+      "copay_specialist": "number",
+      "copay_emergency": "number",
+      "coinsurance": "percentage (0-100)",
+      "covered_services": [
+        "string"
+      ],
+      "excluded_services": [
+        "string"
+      ]
+    },
+    "provider_info": {
+      "pcp_name": "string",
+      "pcp_specialty": "string",
+      "pcp_phone": "string",
+      "pcp_office_address": "string",
+      "network_status": "string (In-network/Out-of-network)",
+      "referred_specialists": [
+        "string"
+      ]
+    },
+    "medical_history": {
+      "pre_existing_conditions": [
+        "string"
+      ],
+      "current_medications": [
+        "string"
+      ],
+      "allergies": [
+        "string"
+      ],
+      "chronic_conditions": [
+        "string"
+      ]
+    }
+  },
+  "validation_rules": {
+    "required_fields": [
+      "insurance_details.member_id",
+      "personal_info.first_name",
+      "personal_info.last_name"
+    ],
+    "field_constraints": {
+      "personal_info.date_of_birth": "must be valid ISO 8601 date (YYYY-MM-DD) or null",
+      "insurance_details.effective_date": "must be valid ISO 8601 date (YYYY-MM-DD) or null",
+      "insurance_details.termination_date": "must be valid ISO 8601 date (YYYY-MM-DD) or null",
+      "coverage_info.deductible": "must be positive number or null",
+      "coverage_info.out_of_pocket_max": "must be positive number or null",
+      "coverage_info.copay_visit": "must be positive number or null",
+      "insurance_details.plan_type": "must be one of: HMO, PPO, EPO, HDHP, POS or null"
+    },
+    "logical_rules": [
+      "member_id must not be empty string",
+      "at least one of email or phone should be present",
+      "if plan_type is specified, it must be valid",
+      "effective_date should not be in the future",
+      "termination_date should be after effective_date if both present"
+    ]
+  }
+}
